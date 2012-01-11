@@ -1,0 +1,82 @@
+
+    <%= form_for :product, @product, :url => products_path, :html => { :multipart => true } do |f| %>
+  <% if @product.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@product.errors.count, "error") %> prohibited this property from being saved:</h2>
+
+      <ul>
+      <% @product.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+ <table class='formProd'>
+   <tr>
+     <td><b><%= f.label :Name %>:</b></td>
+     <td><%= f.text_field :Name %></td>
+   </tr>
+   <tr>
+     <td><b>Category:</b></td>
+     <td><%= f.select :Category, [[Category.find_by_order(1).name,Category.find_by_order(1).id],[Category.find_by_order(2).name,Category.find_by_order(1).id]] %></td>
+   </tr>
+   <tr>
+     <td><b>Bidding Start Price:</b></td>
+     <td><%= f.text_field :Price %></td>
+   </tr>
+   <tr>
+     <td><b>Rent it Now Price:</b></td>
+     <td><%= f.text_field :buyitnowprice %></td>
+   </tr>
+   <tr>
+     <td><b><%= f.label :address %>:</b></td>
+     <td><%= f.text_field :address %></td>
+   </tr>
+   <tr>
+     <td><b><%= f.label :city %>:</b></td>
+     <td><%= f.text_field :city %> <br/>(Enter the city along with the state, eg: Pittsburgh,PA)</td>
+   </tr>
+   <tr>
+     <td><b><%= f.label :country %>:</b></td>
+     <td><%= f.text_field :country %></td>
+   </tr>
+   <tr>
+     <td><b><%= f.label :zip %>:</b></td>
+     <td><%= f.text_field :zip %></td>
+   </tr>
+   <tr>
+     <td><b><%= f.label :Description %>:</b></td>
+     <td></td>
+   </tr>
+   <tr>
+     <td colspan="2"><%= f.text_area :Description %></td>
+   </tr>
+   <tr>
+     <td><b>Upload Image:</b></td>
+     <td><%= f.file_field :avatar %></td>
+   </tr>
+   <%= hidden_field(@product, :url, :value => nil) %>
+   <% if current_user.usertype > 2 %>
+   <tr>
+     <td><b>Upload Video:</b></td>
+     <td><%= f.text_field :url %></td>
+   </tr>
+   <% end %>
+   <tr>
+     <td><b>Auction Expiry Date:</b></td>
+     <td><%= f.datetime_select :expirynew, :default => 24.hours.from_now, :minute_step => 1 %></td>
+   </tr>
+   <tr>
+     <td colspan="2"><b>Renting Terms and Conditions:</b></td>
+   </tr>
+   <tr>
+     <td colspan="2"><%= f.text_area :terms %></td>
+   </tr>
+ </table>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+

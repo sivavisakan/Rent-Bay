@@ -1,0 +1,38 @@
+<h2>Property Listing</h2>
+
+<table width="100%" cellpadding="5" cellspacing="0">
+<tr>
+    <td><b>Property</b></td>
+    <td><b>Category</b></td>
+    <td><b>Price</b></td>
+
+
+<% @products.each do |product| %>
+
+  <tr class="<%= cycle('list_line_odd', 'list_line_even')%>">
+    <% if product.forsale != 0 %>
+    <td><%= link_to product.Name , product %></td>
+    <td><%= Category.find_by_id(product.Category).name %></td>
+    <td><%= product.Price %></td>
+
+
+     <!--<td>
+       <%= image_tag product.avatar.url %>
+        <%= image_tag product.avatar.url(:medium) %>
+        <%= image_tag product.avatar.url(:thumb) %>
+
+    </td>-->
+    <% if !current_user.nil? %>
+    <% if current_user.usertype == 100 %>
+    <td><%= link_to 'Delete', product %></td>
+    <% end %>
+    <% end %>
+
+  </tr>
+<% end %>
+<% end %>
+</table>
+
+<br />
+
+

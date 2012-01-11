@@ -1,0 +1,22 @@
+<% if notice %>
+<p id="notice"><%= notice %></p>
+<% end %>
+
+<h1>Items</h1>
+<% @products.each do |product| %>
+<% if product.forsale == 0  %>
+<div class="entry">
+<%= image_tag(product.Upload_Picture) %>
+
+<h3><%= product.Name %>
+<%= link_to 'Click to view detail', product %> </h3>
+
+<%=sanitize product.Description %>
+
+
+<div class="price_line">
+<span class="price" ><%= number_to_currency(product.Price) %></span>
+</div>
+</div>
+<% end %>
+<% end %>

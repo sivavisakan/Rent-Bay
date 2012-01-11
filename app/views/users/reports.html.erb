@@ -1,0 +1,104 @@
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawActivityChart);
+      google.setOnLoadCallback(drawTypeChart);
+      google.setOnLoadCallback(drawTypeProduct);
+      function drawActivityChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Task');
+        data.addColumn('number', 'Active, Blocked, Passive Users');
+        data.addRows(3);
+        data.setValue(0, 0, 'Active Users');
+        data.setValue(0, 1, <%= @totalActive%>);
+        data.setValue(1, 0, 'Blocked Users');
+        data.setValue(1, 1, <%= @totalBlocked%>);
+        data.setValue(2, 0, 'Passive Users');
+        data.setValue(2, 1, <%= @churnCount%>);
+
+
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div1'));
+        chart.draw(data, {width: 450, height: 300, title: 'User Distribution based on activity'});
+      }
+
+
+      function drawTypeChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Task');
+        data.addColumn('number', 'Sellers,Buyers');
+        data.addRows(2);
+        data.setValue(0, 0, 'Sellers');
+        data.setValue(0, 1, <%= @totalSellers%>);
+        data.setValue(1, 0, 'Buyers');
+        data.setValue(1, 1, <%= @totalBuyers%>);
+       var chart = new google.visualization.PieChart(document.getElementById('chart_div2'));
+        chart.draw(data, {width: 450, height: 300, title: 'User Distribution based on the type'});
+      }
+
+
+       function drawTypeProduct() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Task');
+        data.addColumn('number', 'Sold and Active Products');
+        data.addRows(2);
+        data.setValue(0, 0, 'Properties Active');
+        data.setValue(0, 1, <%= @totalActiveProducts%>);
+        data.setValue(1, 0, 'Properties Sold');
+        data.setValue(1, 1, <%= @totalSoldProducts%>);
+       var chart = new google.visualization.PieChart(document.getElementById('chart_div3'));
+        chart.draw(data, {width: 450, height: 300, title: 'Active vs Sold Properties'});
+      }
+    </script>
+
+<h1> Reports </h1>
+
+<!--<% form_tag  :url => {:controller => "users", :action => "reports"} do %>
+    <%= text_field_tag :lookup %>
+ <%= submit_tag "Submit" %>
+<% end %>
+
+
+<% if (@res != nil && @res != '') %>
+<h3><%= @res.name %></h3>
+</div>
+<% end %>-->
+
+<table class='stats'>
+  <tr><th colspan="2" width="200px">User Statistics</th><td width="20px"></td><th colspan="2" width="200px">Auction Statistics</th></tr>
+  <tr>
+    <td class='reportLabel'>Total Active Users:</td>
+    <td><%= @totalActive %></td><td></td>
+    <td class='reportLabel'>Total Open Auctions:</td>
+    <td><%= @totalActiveProducts %></td>
+  </tr>
+  <tr>
+    <td class='reportLabel'>Total Sellers:</td>
+    <td><%= @totalSellers %></td><td></td>
+    <td class='reportLabel'>Total Rent Now:</td>
+    <td><%= @totalActiveProducts %></td>
+  </tr>
+  <tr>
+    <td class='reportLabel'>Total Buyers:</td>
+    <td><%= @totalBuyers %></td><td></td>
+    <td class='reportLabel'>Total Auctions:</td>
+    <td><%= @totalActiveProducts + @totalSoldProducts %></td>
+  </tr>
+  <tr>
+    <td class='reportLabel'>Total Blocked Users:</td>
+    <td><%= @totalBlocked %></td><td></td>
+    <td class='reportLabel'>Total number of Properties rented </td>
+    <td><%= @totalSoldProducts %></td>
+  </tr>
+  <tr>
+    <td class='reportLabel'>Total Lost Users:</td>
+    <td><%= @churnCount %></td><td></td>
+    <td class='reportLabel'>Total transactions </td>
+    <td><%= @totalMoney %></td>
+  </tr>
+
+</table>
+    <div id="chart_div1"></div>
+    <div id="chart_div2"></div>
+    <div id="chart_div3"></div>
+
+

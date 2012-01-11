@@ -1,0 +1,161 @@
+   <script type="text/javascript">
+
+
+
+        function createMarker(point,html) {
+            var marker = new GMarker(point);
+            GEvent.addListener(marker, "click", function() {
+             marker.openInfoWindowHtml(html);
+             });
+            return marker;
+        }
+
+        // this is called when the page loads.
+        // it initializes the map, and creates each marker
+        function initialize() {
+            var map = new GMap(document.getElementById("map"));
+            map.addControl(new GSmallMapControl());
+            map.centerAndZoom(new GPoint(<%= @product.lon.to_d %> , <%= @product.lat.to_d%>), 3);
+
+            var point = new GPoint(<%= @product.lon.to_d %> , <%= @product.lat.to_d%>);
+            var marker = createMarker(point,'<div><%= @product.Description %> </div>')
+            map.addOverlay(marker);
+
+        }
+        </script>
+
+<p id="notice"><%= notice %></p>
+
+<h2>
+  <b>Property:</b>
+  <%= @product.Name %>
+</h2>
+<table class="formProd">
+  <tr>
+    <td width="500px">
+      <% if (!@product.avatar.url.nil?) %>
+      <%= image_tag @product.avatar.url %>
+      <%end%>
+
+      <% if (@product.avatar.url(:medium).nil?) %>
+      <%= image_tag @product.avatar.url(:medium) %>
+      <%end%>
+
+      <% if (@product.avatar.url(:thumb).nil?) %>
+      <%= image_tag @product.avatar.url(:thumb) %>
+      <%end%>                                    <br/>
+
+      <b>Category:</b>
+      <%= Category.find_by_id(@product.Category).name %>
+    </td>
+    <td width="300px" valign="top">
+      <b>Address</b>
+      <hr/>
+      <% if @product.address == '' %>
+      Contact the admin to know the address of this property
+      <%end%>
+      <% if @product.address != '' %>
+      <%= @product.address  %>
+      <%end%>
+      <% if @product.city == '' %>
+      , (City not specified)
+      <%end%>
+      <% if @product.city != '' %>
+      ,<%= @product.city  %>
+      <% end %>
+
+      <% if @product.zip == '' %>
+      , USA
+      <%end%>
+      <% if @product.zip == '' %>, <%= @product.zip  %><% end %>
+
+      <% if @product.country == '' %>
+      <br/>USA
+      <%end%>
+      <% if @product.country != '' %>
+      <br/><%= @product.country  %><% end %>               <br/>
+
+      <% if @product.Rental_Period == '' %>
+      <b>Rental period:</b>
+      <%= @product.Rental_Period %>
+      <% end %>
+      <p>
+        <b>Location on the Map of <%= @product.city  %>:</b><br/>
+        <div id="map" style="width: 370px; height: 300px"></div>
+      </p>
+
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">
+    <b>Current bid:</b>
+      <% @temp =  Bid.find_all_by_itemid(@product.id) %>
+      <% if "#{@temp.size}" == "0" %>
+       <%= @product.Price %>
+      <% else %>
+       <%   @rail = Bid.find_by_sql ["SELECT * FROM Bids WHERE itemid=?", @product.id]%>
+         <%  newamount = "#{@rail.last.amount}" %>
+
+         <%=  newamount %>
+      <% end %>
+
+      <% if !current_user.nil? %>
+    <% if @product.sellerid != current_user.id and current_user.active != 0 %>
+    <%= render 'bidform',:locals =>{ :product => @product } %>
+    <%= render 'rentnowform' , :locals =>{ :product => @product }  %>
+    <% end %>
+    <% else %>
+           <%= link_to 'Want to bid?', home_path %><br/><br/>
+    <% end %>
+
+      <br/><b>Auction Expiry Date:</b>
+      <%= @product.expirynew %>
+
+      <p>
+          <b>Count Down :     </b>
+        <% expirytime = @product.expirynew.to_s.gsub('-','/')  %>
+         <% expirytimeProper = expirytime[0,20]%>
+
+        <script language="JavaScript">
+        TargetDate = "<%= expirytimeProper %>";
+        BackColor = "white";
+        ForeColor = "navy";
+        CountActive = true;
+        CountStepper = -1;
+        LeadingZero = true;
+        DisplayFormat = "%%D%% Days, %%H%% Hours, %%M%% Minutes, %%S%% Seconds.";
+        FinishMessage = "The auction on the property has expired";
+        </script>
+        <script language="JavaScript" src="http://scripts.hashemian.com/js/countdown.js"></script>
+      </p>
+    </td>
+    <td>
+      <% if @product.url != '' %>
+      <object width="300" height="300"><param name="movie" value="<%= sanitize @product.url %>">
+      </param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param>
+      <embed src="<%= sanitize @product.url %>" type="application/x-shockwave-flash" width="300" height="300" allowscriptaccess="always" allowfullscreen="true">
+      </embed></object>
+      <% end %>
+    </td>
+  </tr>
+
+</table>
+
+
+<p>
+  <b>Description</b><hr/>
+  <% if @product.Description == '' %>
+  No description given by the owner
+  <%end%>
+  <%= @product.Description  %>
+</p>
+
+<p>
+  <b>Terms and Conditions</b><hr/>
+  <%if @products.nil? %>
+  There are no terms and conditions specified by the owner.
+  <%end%>
+  <%= @product.terms  %>
+</p>
+
+<%= link_to 'Back', products_path %>

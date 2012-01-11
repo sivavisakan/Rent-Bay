@@ -1,0 +1,14 @@
+<h2>Upgrade Profile</h2>
+
+<%= form_for(@user) do |f| %>
+  <div class="field">
+    <label for="usertype">Account Type:</label>  <br/>
+    <br><%= f.radio_button :usertype, 1 %><b>Silver</b>: $30.00 1 Year subscription - 1 Picture for each Property you Post
+    <br><%= f.radio_button :usertype, 2 %><b>Gold</b>: $40.00 1 Year subscription - 1 Picture + 1 Video for each Property you Post
+    <br><%= f.radio_button :usertype, 3 %><b>Platinum</b>: $50.00 1 Year subscription - 1 Picture + 1 Video for each Property you Post + Special Promotion of your Properties
+
+  </div>
+  <div class="actions">
+    <%= f.submit "Sign up"%>
+  </div>
+<% end %>

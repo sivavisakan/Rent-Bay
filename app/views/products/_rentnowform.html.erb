@@ -1,0 +1,10 @@
+
+<% form_for @product, :url => update_path, :method => 'get' do |g|%>
+
+    <%= hidden_field_tag :id,@product.id %>
+
+    <%= hidden_field_tag :forsale,0 %>
+
+    <p>Rent it Now Price: <%= @product.buyitnowprice %>
+    <%= g.submit "Rent it now " %></p>
+<% end %>

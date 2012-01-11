@@ -1,0 +1,54 @@
+<h2>Sign up</h2>
+
+<%= form_for(@user) do |f| %>
+   <% if @user.errors.any? %>
+   <%= render "shared/error_messages" %>
+   <% end %>
+  <div class="field">
+    <%= f.label :name, "First Name" %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :lastname, "Last Name" %><br />
+    <%= f.text_field :lastname %>
+  </div>
+  <div class="field">
+    <%= f.label :email, "E-mail" %><br />
+    <%= f.text_field :email %>
+  </div>
+  <div class="field">
+    <%= f.label :password %><br />
+    <%= f.password_field :password %>
+  </div>
+  <div class="field">
+    <%= f.label :password_confirmation, "Confirmation" %><br />
+    <%= f.password_field :password_confirmation %>
+  </div>
+  <div class="field">
+    <%= f.label :address, "Address" %><br />
+    <%= f.text_field :address %>
+  </div>
+    <div class="field">
+    <%= f.label :city, "City" %><br />
+    <%= f.text_field :city %>
+  </div>
+     <div class="field">
+    <%= f.label :country, "Country" %><br />
+    <%= f.text_field :country %>
+  </div>
+    <div class="field">
+    <%= f.label :zip, "Zip Code" %><br />
+    <%= f.text_field :zip %>
+  </div>
+    <div class="field">
+    <%= f.label :phone, "Phone" %><br />
+    <%= f.text_field :phone %>
+  </div>
+   <div class="field">
+    <%= f.label :dob, "DOB (MMDDYY)" %><br />
+    <%= f.text_field :dob %>
+  </div>
+  <div class="actions">
+    <%= f.submit "Sign up" %>
+  </div>
+<% end %>

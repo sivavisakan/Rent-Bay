@@ -1,0 +1,41 @@
+<% if (@user.active == 0) %>
+<p class='errorText'><%= "Unfortunately, you are blocked! Please contact the administrator for further assistance!" %></p>
+<% end %>
+
+<h2> User Profile: <%= @user.name %> &nbsp; <%= @user.lastname %>
+  <span text-align='right' style="float:right;">
+    <% if@user.usertype ==2 or @user.usertype ==3 or @user.usertype ==4%>
+    <%= link_to "Post New Property", additem_path %> |
+    <%end%>
+    <%= link_to "All Properties", viewitems_path %>
+  </span>
+</h2>
+<p><b>E-mail</b>: <%= @user.email %></p>
+<p><b>Address</b>: <%= @user.address %></p>
+<p><b>City</b>: </b> <%= @user.city %></p>
+<p><b>ZIP: </b> <%= @user.zip %></p>
+<p><b>Country</b>: </b> <%= @user.country %></p>
+
+<% if(@user.usertype) %>
+<p><b>User Account Type</b>:
+<% if( @user.usertype == 1)%> <b> Renter </b> <%end%>
+<% if( @user.usertype == 2)%> <b> Silver Owner </b> <%end%>
+<% if( @user.usertype == 3)%> <b> Gold Owner </b> <%end%>
+<% if( @user.usertype == 4)%> <b> Platinum Owner </b> <%end%>
+(<%if @user.active !=0 %>
+<% if(@user.usertype != 4) %>
+<%= link_to "Upgrade your account", upgradeaccount_path %>
+<% end %>
+<% if(@user.usertype == 4) %>
+<%= link_to "Degrade your account", upgradeaccount_path %>
+<% end %>
+<%end %>)
+</p>
+<%end%>
+<p><b>Phone</b>: <%= @user.phone %></p>
+
+<br/>
+
+<h2>Notifications</h2>
+<p><%= raw @user.notification%></p>
+<br/>

@@ -1,0 +1,16 @@
+<% if notice %>
+<p id="notice"><%= notice %></p>
+<% end %>
+<h1>Items</h1>
+<% @users.each do |user| %>
+<div class="entry">
+
+<h3><%= product.Name %></h3>
+<%=sanitize product.Description %>
+
+
+<div class="price_line">
+<span class="price" ><%= number_to_currency(product.Price) %></span>
+</div>
+</div>
+<% end %>

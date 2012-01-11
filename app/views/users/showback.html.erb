@@ -1,0 +1,44 @@
+
+<h2> User Profile</h2>
+<h2><%= @user.name %> &nbsp; <%= @user.lastname %></h2>
+<p><b>E-mail</b>: <%= @user.email %></p>
+<p><b>Address</b>: <%= @user.address %></p>
+<p><b>City</b>: </b> <%= @user.city %></p>
+<p><b>ZIP: </b> <%= @user.zip %></p>
+<p><b>Country</b>: </b> <%= @user.country %></p>
+
+<% if(@user.usertype) %>
+<p><b>User Account Type</b>:
+<% if( @user.usertype == 1)%> <b> Buyer </b> <%end%>
+<% if( @user.usertype == 2)%> <b> Silver </b> <%end%>
+<% if( @user.usertype == 3)%> <b> Gold </b> <%end%>
+<% if( @user.usertype == 4)%> <b> Platinum </b> <%end%>
+</p>
+<%end%>
+
+
+
+<p><b>Phone</b>: <%= @user.phone %></p>
+
+<br/>
+
+<p><b>Notification :</b><%= raw @user.notification%>
+<br/>
+
+<%if @user.active !=0 %>
+
+<% if(@user.usertype != 4) %>
+<li><%= link_to "Upgrade your account", upgradeaccount_path %></li><br/>
+<% end %>
+<% if(@user.usertype == 4) %>
+<li><%= link_to "Degrade your account", upgradeaccount_path %></li><br/>
+<% end %>
+<% if@user.usertype ==2 or @user.usertype ==3 or @user.usertype ==4%>
+<li><%= link_to "Add a new product for sale!", additem_path %></li><br/>
+<%end%>
+<li><%= link_to "View list of products", viewitems_path %></li>
+<%end %>
+
+<% if (@user.active == 0) %>
+<p><%= "Unfortunately, you are blocked! Please contact the administrator for further assistance!" %></p>
+<% end %>
